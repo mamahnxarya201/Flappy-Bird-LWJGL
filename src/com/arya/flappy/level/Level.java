@@ -1,8 +1,12 @@
 package com.arya.flappy.level;
 
+import java.util.Map;
+
 import com.arya.flappy.graphics.Shader;
 import com.arya.flappy.graphics.Texture;
 import com.arya.flappy.graphics.VertexArray;
+import com.arya.flappy.maths.Matrix4f;
+import com.arya.flappy.maths.Vector3f;
 
 /*
  * Level Class
@@ -16,6 +20,13 @@ public class Level {
 	
 	private VertexArray background;
 	private Texture bgTexture;
+	
+	// Horizontal scroll amount
+	// Nantinya background akan di loop terus terusan 
+	// Sejalan dengan karakter player
+	private int xScroll = 0;
+	
+	private int map = 0;
 	
 	public Level() {
 		float[] vertices = new float[] {
@@ -43,9 +54,28 @@ public class Level {
 		bgTexture = new Texture("res/bg.jpeg");
 	}
 	
+	public void update() {
+		// Kita menggerakan background kekiri
+		// Maka dalam matrix kita menguranginya 
+		xScroll--;
+		
+		if (-xScroll % 335 == 0) {
+			map++;
+		}
+	}
+	
 	public void render() {
 		bgTexture.bind();
 		Shader.BG.enable();
+		background.bind();
+		// Me looping background texture
+		for (int i = map; i < map + 3; i++) {
+			Shader.BG.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(i * 10 + xScroll * 0.03f, 0.0f, 0.0f)));
+			
+			// Background tidak akan di render terus terusan 
+			// Jadi akan di dimasukkan ke method draw
+			background.draw();
+		}
 		background.render();
 		Shader.BG.disable();
 		bgTexture.unbind();

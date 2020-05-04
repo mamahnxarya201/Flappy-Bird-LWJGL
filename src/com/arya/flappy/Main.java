@@ -85,9 +85,9 @@ public class Main implements Runnable {
 		glfwShowWindow(window);
 		// Register context ke thread OpenGL
 		GL.createCapabilities();
-		
-		GLUtil.setupDebugMessageCallback();
-		
+//		
+//		GLUtil.setupDebugMessageCallback();
+//		
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
 				
@@ -114,12 +114,38 @@ public class Main implements Runnable {
 	public void run() {
 		// Init dan Update berada didalm satu thread
 		init();
+		
+		// FPS Counter
+		// Untuk mengeset FPS(Frame Per Second) agar pas dimata
+		long lastTime = System.nanoTime();
+		double delta = 0.0;
+		double ns = 1000000000.0 / 60.0;
+		long timer = System.currentTimeMillis();
+		int updates = 0;
+		int frames = 0;
 		while(running = true) {
-			// Method update digunakan untuk mengupdate setiap state didalam game 
-			update();
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			if (delta >= 1.0) {
+				// Method update digunakan untuk mengupdate setiap state didalam game 
+				update();
+				updates++;
+				delta--;
+			}
 			
 			// Method render digunakan untuk menampilkan game tersebut 
 			render();
+			
+			frames++;
+			
+			// Reset FPS
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				System.out.println(updates + " ups, " + frames + " fps");
+				updates = 0;
+				frames = 0;
+			}
 			
 			if (glfwWindowShouldClose(window) == true) {
 				running = false;
@@ -130,6 +156,7 @@ public class Main implements Runnable {
 	private void update() {
 		// Attach event listener ke thread OpenGL tadi
 		glfwPollEvents();
+		level.update();
 		
 		if (Input.keys[GLFW_KEY_SPACE]) {
 			System.out.println("Fly Birdy FLy !!!");
