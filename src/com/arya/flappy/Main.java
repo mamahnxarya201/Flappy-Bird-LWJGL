@@ -5,11 +5,12 @@ import java.nio.*;
 
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLUtil;
 
 import com.arya.flappy.graphics.Shader;
 import com.arya.flappy.input.Input;
 import com.arya.flappy.level.Level;
-import com.arya.flappy.math.Matrix4f;
+import com.arya.flappy.maths.Matrix4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -54,6 +55,8 @@ public class Main implements Runnable {
 		// Settingan untuk window yang nanti di render
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+		
 		// Window disini bekerja seperti ID
 		window = glfwCreateWindow(width, height, "Flappy", NULL, NULL);
 		
@@ -82,6 +85,8 @@ public class Main implements Runnable {
 		glfwShowWindow(window);
 		// Register context ke thread OpenGL
 		GL.createCapabilities();
+		
+		GLUtil.setupDebugMessageCallback();
 		
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glEnable(GL_DEPTH_TEST);

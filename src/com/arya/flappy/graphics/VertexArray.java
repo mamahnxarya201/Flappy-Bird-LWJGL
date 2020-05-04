@@ -74,8 +74,8 @@ public class VertexArray {
 		// Kenapa Parameter yang ke 2 (size)
 		// Berisi 2? karena kooridnat X,Y,
 		// Texture yang digunakan hanya texture 2D
-		glVertexAttribPointer(Shader.TCORD_ATTRIB, 2, GL_FLOAT, false, 0, 0);
-		glEnableVertexAttribArray(Shader.TCORD_ATTRIB);
+		glVertexAttribPointer(Shader.TCOORD_ATTRIB, 2, GL_FLOAT, false, 0, 0);
+		glEnableVertexAttribArray(Shader.TCOORD_ATTRIB);
 		
 		// Bind IBO
 		ibo = glGenBuffers();

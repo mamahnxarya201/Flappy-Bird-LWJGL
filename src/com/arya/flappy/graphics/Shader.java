@@ -5,8 +5,8 @@ import static org.lwjgl.opengl.GL20.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.arya.flappy.math.Matrix4f;
-import com.arya.flappy.math.Vector3F;
+import com.arya.flappy.maths.Matrix4f;
+import com.arya.flappy.maths.Vector3f;
 import com.arya.flappy.utils.ShaderUtils;
 
 // Class yang berisi shader asli
@@ -20,8 +20,7 @@ public class Shader {
 	public static final int VERTEX_ATTRIB = 0;
 	
 	// Texture Coordinates
-	public static final int TCORD_ATTRIB = 1;
-	
+	public static final int TCOORD_ATTRIB = 1;
 	private boolean enabled = false;
 	
 	public static Shader BG;
@@ -51,22 +50,20 @@ public class Shader {
 	public int getUniform(String name) {
 		// Cek cache
 		// Jika ditemukan cache langsung return Key tersebut
-		if (locationCache.containsKey(name)) {
+		if (locationCache.containsKey(name))
 			return locationCache.get(name);
-		}
 		
 		// Fungsi ini nantinya hanya akan dipanggil sekali saja 
 		// Karena kita sudah men cache locationnya
 		int result = glGetUniformLocation(ID, name);
 		
 		// Jika return -1 berarti lokasi shader tidak bisa ditentukan
-		if (result == -1) {
-			System.err.println("Shader uniform variable '" + name + "'!");
-		}else {
+		if (result == -1) 
+			System.err.println("Could not find uniform variable '" + name + "'!");
+		else
 			// Taruh hasil di hash map 
 			// Yang nantinya akan menjadi cache
 			locationCache.put(name, result);
-		}
 		return result;
 	}
 	
@@ -95,7 +92,7 @@ public class Shader {
 	}
 	
 	// 3f untuk data berbasis 3 float
-	public void setUniform3f(String name, Vector3F vector) {
+	public void setUniform3f(String name, Vector3f vector) {
 		// Unifrom variable adalah cara agar kita bisa
 		// Mentransfer shader data dari CPU
 		if (!enabled) enable();
