@@ -90,8 +90,12 @@ public class Main implements Runnable {
 		
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
+				
+		// Memilih unit tekstur yang akan memengaruhi panggilan status tekstur selanjutnya.
+		// Angka dibelakang GL_TEXTURE berasal dari shader.BG.setuniform1i("nama", value)
+		glActiveTexture(GL_TEXTURE1);
+		
 		System.out.println("OpenGL: " + glGetString(GL_VERSION));
-//		glActiveTexture(GL_TEXTURE1);
 		
 		// Load semua shader
 		Shader.loadAll();
@@ -100,7 +104,9 @@ public class Main implements Runnable {
 		// Projection Matrix
 		Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
 		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
-
+		
+		// Set texture ke uniform 1i
+		Shader.BG.setUniform1i("tex", 1);
 
 		level = new Level();
 	}
