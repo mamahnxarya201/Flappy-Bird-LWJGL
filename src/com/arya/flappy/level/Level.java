@@ -28,6 +28,8 @@ public class Level {
 	
 	private int map = 0;
 	
+	private Bird bird;
+	
 	public Level() {
 		float[] vertices = new float[] {
 			-10.0f, -10.0f * 9.0f / 16.0f, 0.0f,
@@ -52,6 +54,8 @@ public class Level {
 		
 		background = new VertexArray(vertices, indices, tcs);
 		bgTexture = new Texture("res/bg.jpeg");
+		
+		bird = new Bird();
 	}
 	
 	public void update() {
@@ -62,6 +66,8 @@ public class Level {
 		if (-xScroll % 335 == 0) {
 			map++;
 		}
+				
+		bird.update();
 	}
 	
 	public void render() {
@@ -76,8 +82,9 @@ public class Level {
 			// Jadi akan di dimasukkan ke method draw
 			background.draw();
 		}
-		background.render();
 		Shader.BG.disable();
 		bgTexture.unbind();
+		
+		bird.render();
 	}
 }

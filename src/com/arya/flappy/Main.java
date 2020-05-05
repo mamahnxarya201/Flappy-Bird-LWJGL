@@ -107,7 +107,10 @@ public class Main implements Runnable {
 		
 		// Set texture ke uniform 1i
 		Shader.BG.setUniform1i("tex", 1);
-
+		
+		Shader.BIRD.setUniformMat4f("pr_matrix", pr_matrix);
+		Shader.BIRD.setUniform1i("tex", 1);
+		
 		level = new Level();
 	}
 	
@@ -157,10 +160,6 @@ public class Main implements Runnable {
 		// Attach event listener ke thread OpenGL tadi
 		glfwPollEvents();
 		level.update();
-		
-		if (Input.keys[GLFW_KEY_SPACE]) {
-			System.out.println("Fly Birdy FLy !!!");
-		}
 	}
 	
 	private void render() {
