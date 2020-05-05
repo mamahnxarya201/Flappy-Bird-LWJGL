@@ -1,6 +1,7 @@
 package com.arya.flappy.level;
 
 import java.util.Map;
+import java.util.Random;
 
 import com.arya.flappy.graphics.Shader;
 import com.arya.flappy.graphics.Texture;
@@ -36,7 +37,7 @@ public class Level {
 	private int index = 0;
 	private float OFFSET = 5.0f;
 	private boolean control = true, reset = false;
-//	private Random random = new Random();
+	private Random random = new Random();
 	
 	public Level() {
 		float[] vertices = new float[] {
@@ -68,17 +69,22 @@ public class Level {
 		createPipes();
 	}
 	
+	// Method untuk menciptakan pipes
 	private void createPipes() {
 		Pipe.create();
 		for (int i = 0; i < 5 * 2; i += 2) {
-			pipes[i] = new Pipe(index * 3.0f, 4.0f);
+			
+			// Me random tinggi/celah antara pipes 
+			pipes[i] = new Pipe(index * 3.0f, random.nextFloat() * 4.0f);
 			
 			// Menyamakan posisi pipe yang di generate dengan
 			// Posisi background
-			pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 10.0f);
+			pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.0f);
 			index += 2;
 		}
 	}
+	
+	// Meng update pipes
 	private void updatePipes() {
 //		pipes[] 
 	}
@@ -95,6 +101,7 @@ public class Level {
 		bird.update();
 	}
 	
+	// Me render pipes
 	private void renderPipes() {
 		Shader.PIPE.enable();
 		Shader.PIPE.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(xScroll * 0.03f, 0.0f, 0.0f)));
