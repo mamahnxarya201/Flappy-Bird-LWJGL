@@ -30,6 +30,14 @@ public class Level {
 	
 	private Bird bird;
 	
+	// Kita hanya membutuhkan 10 Pipe
+	// Karena nantinya pipe tersebut akan kita daur ulang (reuse)
+	private Pipe[] pipes = new Pipe[5 * 2];
+	private int index = 0;
+	private float OFFSET = 5.0f;
+	private boolean control = true, reset = false;
+//	private Random random = new Random();
+	
 	public Level() {
 		float[] vertices = new float[] {
 			-10.0f, -10.0f * 9.0f / 16.0f, 0.0f,
@@ -56,6 +64,23 @@ public class Level {
 		bgTexture = new Texture("res/bg.jpeg");
 		
 		bird = new Bird();
+		
+		createPipes();
+	}
+	
+	private void createPipes() {
+		Pipe.create();
+		for (int i = 0; i < 5 * 2; i += 2) {
+			pipes[i] = new Pipe(index * 3.0f, 4.0f);
+			
+			// Menyamakan posisi pipe yang di generate dengan
+			// Posisi background
+			pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 10.0f);
+			index += 2;
+		}
+	}
+	private void updatePipes() {
+//		pipes[] 
 	}
 	
 	public void update() {
@@ -68,6 +93,25 @@ public class Level {
 		}
 				
 		bird.update();
+	}
+	
+	private void renderPipes() {
+		Shader.PIPE.enable();
+		Shader.PIPE.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(xScroll * 0.03f, 0.0f, 0.0f)));
+		
+		// Bind Texture,VertexArray
+		Pipe.getTexture().bind();
+		Pipe.getMesh().bind();
+		
+		// Banyaknya pipe yang akan di tampilkan
+		for(int i = 0; i < 5 * 2; i++) {
+			// Set posisi matrix dari pipe tersebut
+			Shader.PIPE.setUniformMat4f("ml_matrix", pipes[i].getModelMatrix());
+			Pipe.getMesh().draw();
+		}
+		
+		Pipe.getTexture().unbind();
+		Pipe.getMesh().unbind();
 	}
 	
 	public void render() {
@@ -85,6 +129,7 @@ public class Level {
 		Shader.BG.disable();
 		bgTexture.unbind();
 		
+		renderPipes();
 		bird.render();
 	}
 }

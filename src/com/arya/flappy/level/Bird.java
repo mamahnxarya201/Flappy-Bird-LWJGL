@@ -46,20 +46,7 @@ public class Bird {
 		texture = new Texture("res/bird.png");
 	}
 	
-	public void update() {
-//		if (Input.keys[GLFW.GLFW_KEY_UP]) {
-//			position.y += 0.1f;
-//		}
-//		if (Input.keys[GLFW.GLFW_KEY_DOWN]) {
-//			position.y -= 0.1f;
-//		}
-//		if (Input.keys[GLFW.GLFW_KEY_LEFT]) {
-//			position.x -= 0.1f;
-//		}
-//		if (Input.keys[GLFW.GLFW_KEY_RIGHT]) {
-//			position.x += 0.1f;
-//		}
-		
+	public void update() {		
 		position.y -= delta;
 		if (Input.isKeyDown(GLFW_KEY_SPACE)) {
 			// Jika spasi ditekan kita naik

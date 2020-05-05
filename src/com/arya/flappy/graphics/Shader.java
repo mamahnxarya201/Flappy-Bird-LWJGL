@@ -23,7 +23,7 @@ public class Shader {
 	public static final int TCOORD_ATTRIB = 1;
 	private boolean enabled = false;
 	
-	public static Shader BG, BIRD;
+	public static Shader BG, BIRD, PIPE;
 	
 	private final int ID;
 	
@@ -43,6 +43,7 @@ public class Shader {
 	public static void loadAll() {
 		BG = new Shader("shaders/bg.vert", "shaders/bg.frag");
 		BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
+		PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
 	}
 	
 	// Fungsi yang berfungsi untuk
