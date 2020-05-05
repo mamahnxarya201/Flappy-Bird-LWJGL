@@ -67,6 +67,9 @@ public class Bird {
 		} else {
 			delta += 0.01f;
 		}
+		
+		// Animasi Rotasi burung
+		rot = delta * 90.0f;
 	}
 	
 	private void fall() {
@@ -76,6 +79,8 @@ public class Bird {
 	
 	public void render() {
 		Shader.BIRD.enable();
+		
+		// Apply matrix dengan animasi rotasi burung 
 		Shader.BIRD.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
 		texture.bind();
 		mesh.render();
