@@ -104,7 +104,7 @@ public class Level {
 	// Me render pipes
 	private void renderPipes() {
 		Shader.PIPE.enable();
-		Shader.PIPE.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(xScroll * 0.03f, 0.0f, 0.0f)));
+		Shader.PIPE.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(xScroll * 0.05f, 0.0f, 0.0f)));
 		
 		// Bind Texture,VertexArray
 		Pipe.getTexture().bind();
@@ -114,6 +114,9 @@ public class Level {
 		for(int i = 0; i < 5 * 2; i++) {
 			// Set posisi matrix dari pipe tersebut
 			Shader.PIPE.setUniformMat4f("ml_matrix", pipes[i].getModelMatrix());
+			
+			// Jika i di modulo 2 sama dengan 0 maka pipe berada di atas
+			Shader.PIPE.setUniform1i("top", i % 2 == 0 ? 1 : 0);
 			Pipe.getMesh().draw();
 		}
 		
