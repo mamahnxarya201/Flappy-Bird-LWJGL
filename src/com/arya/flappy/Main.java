@@ -51,7 +51,7 @@ public class Main implements Runnable {
 		// Initialize GLFW (OpenGL API)
 		if ( !glfwInit() )
 			throw new IllegalStateException("Unable to initialize GLFW");
-		
+		glfwSwapInterval(0);
 		// Settingan untuk window yang nanti di render
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		
@@ -118,45 +118,41 @@ public class Main implements Runnable {
 	}
 	
 	public void run() {
+
 		// Init dan Update berada didalm satu thread
 		init();
 		
-		// FPS Counter
-		// Untuk mengeset FPS(Frame Per Second) agar pas dimata
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
 		long timer = System.currentTimeMillis();
 		int updates = 0;
 		int frames = 0;
-		while(running = true) {
+		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			if (delta >= 1.0) {
-				// Method update digunakan untuk mengupdate setiap state didalam game 
 				update();
 				updates++;
 				delta--;
 			}
-			
-			// Method render digunakan untuk menampilkan game tersebut 
 			render();
-			
 			frames++;
-			
-			// Reset FPS
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				System.out.println(updates + " ups, " + frames + " fps");
 				updates = 0;
 				frames = 0;
 			}
-			
 			if (glfwWindowShouldClose(window) == true) {
-				running = false;
+				running = false; 
 			}
+				
 		}
+		
+		glfwDestroyWindow(window);
+		glfwTerminate();
 	}
 	
 	private void update() {

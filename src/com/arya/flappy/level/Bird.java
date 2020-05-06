@@ -59,7 +59,7 @@ public class Bird {
 		rot = delta * 90.0f;
 	}
 	
-	private void fall() {
+	public void fall() {
 		// Jumlah kecepatan jatuh
 		delta = -0.15f;
 	}
@@ -72,5 +72,13 @@ public class Bird {
 		texture.bind();
 		mesh.render();
 		Shader.BIRD.disable();
+	}
+
+	public float getY() {
+		return position.y;
+	}
+
+	public float getSize() {
+		return SIZE;
 	}
 }

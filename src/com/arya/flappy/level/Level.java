@@ -35,8 +35,12 @@ public class Level {
 	// Karena nantinya pipe tersebut akan kita daur ulang (reuse)
 	private Pipe[] pipes = new Pipe[5 * 2];
 	private int index = 0;
+	
+	// Agar player tidak spawn terlalu dekat dengan pipe
 	private float OFFSET = 5.0f;
 	private boolean control = true, reset = false;
+	
+	// Untuk merandom posisi pipe
 	private Random random = new Random();
 	
 	public Level() {
@@ -75,18 +79,20 @@ public class Level {
 		for (int i = 0; i < 5 * 2; i += 2) {
 			
 			// Me random tinggi/celah antara pipes 
-			pipes[i] = new Pipe(index * 3.0f, random.nextFloat() * 4.0f);
+			pipes[i] = new Pipe(OFFSET + index * 3.0f, random.nextFloat() * 4.0f);
 			
 			// Menyamakan posisi pipe yang di generate dengan
 			// Posisi background
-			pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.0f);
+			pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 12.0f);
 			index += 2;
 		}
 	}
 	
 	// Meng update pipes
 	private void updatePipes() {
-//		pipes[] 
+		pipes[index % 10] =  new Pipe(OFFSET + index * 3.0f, random.nextFloat() * 4.0f);
+		pipes[(index + 1 ) % 10] = new Pipe(pipes[index % 10].getX(), pipes[index % 10].getY() - 12.0f);
+		index += 2;
 	}
 	
 	public void update() {
@@ -96,9 +102,19 @@ public class Level {
 		
 		if (-xScroll % 335 == 0) {
 			map++;
+		} 
+		
+		if(-xScroll > 250 && -xScroll % 120 == 0) {
+			updatePipes();
 		}
 				
 		bird.update();
+		
+		if (control && collision()) {
+			bird.fall();
+			control = false;
+			System.out.println("Collide");
+		}
 	}
 	
 	// Me render pipes
@@ -124,12 +140,38 @@ public class Level {
 		Pipe.getMesh().unbind();
 	}
 	
+	private boolean collision() {
+		for (int i = 0; i < 5 * 2; i++) {
+			float bx = -xScroll * 0.05f;
+			float by = bird.getY();
+			float px = pipes[i].getX();
+			float py = pipes[i].getY();
+			
+			float bx0 = bx - bird.getSize() / 2.0f;
+			float bx1 = bx + bird.getSize() / 2.0f;
+			float by0 = by - bird.getSize() / 2.0f;
+			float by1 = by + bird.getSize() / 2.0f;
+			
+			float px0 = px;
+			float px1 = px + Pipe.getWidth();
+			float py0 = py;
+			float py1 = py + Pipe.getHeight();
+			
+			if (bx1 > px0 && bx0 < px1) {
+				if (by1 > py0 && by0 < py1) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}  
+	
 	public void render() {
 		bgTexture.bind();
 		Shader.BG.enable();
 		background.bind();
 		// Me looping background texture
-		for (int i = map; i < map + 3; i++) {
+		for (int i = map; i < map + 4; i++) {
 			Shader.BG.setUniformMat4f("vw_matrix", Matrix4f.translate(new Vector3f(i * 10 + xScroll * 0.03f, 0.0f, 0.0f)));
 			
 			// Background tidak akan di render terus terusan 
