@@ -158,6 +158,7 @@ public class Main implements Runnable {
 	private void update() {
 		// Attach event listener ke thread OpenGL tadi
 		glfwPollEvents();
+		
 		level.update();
 	}
 	

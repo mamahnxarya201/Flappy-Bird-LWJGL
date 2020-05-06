@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_ACCUM_ALPHA_BITS;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opencl.ALTERALiveObjectTracking;
 
 import com.arya.flappy.graphics.Shader;
 import com.arya.flappy.graphics.Texture;
@@ -47,16 +48,16 @@ public class Bird {
 	}
 	
 	public void update() {		
-		position.y -= delta;
-		if (Input.isKeyDown(GLFW_KEY_SPACE)) {
-			// Jika spasi ditekan kita naik
-			delta = -0.15f;
-		} else {
-			delta += 0.01f;
-		}
-		
-		// Animasi Rotasi burung
-		rot = delta * 90.0f;
+			position.y -= delta;
+			if (Input.isKeyDown(GLFW_KEY_SPACE)) {
+				// Jika spasi ditekan kita naik
+				delta = -0.15f;
+			} else {
+				delta += 0.01f;
+			}
+
+			// Animasi Rotasi burung
+			rot = delta * 90.0f;
 	}
 	
 	public void fall() {

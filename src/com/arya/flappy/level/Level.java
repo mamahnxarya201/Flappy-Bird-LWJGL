@@ -98,22 +98,25 @@ public class Level {
 	public void update() {
 		// Kita menggerakan background kekiri
 		// Maka dalam matrix kita menguranginya 
-		xScroll--;
-		
-		if (-xScroll % 335 == 0) {
-			map++;
-		} 
-		
-		if(-xScroll > 250 && -xScroll % 120 == 0) {
-			updatePipes();
+		if (control) {
+			xScroll--;
+			
+			if (-xScroll % 335 == 0) {
+				map++;
+			} 
+			
+			if(-xScroll > 250 && -xScroll % 120 == 0) {
+				updatePipes();
+			}
 		}
+		
 				
 		bird.update();
 		
 		if (control && collision()) {
+			System.out.println("Collide");
 			bird.fall();
 			control = false;
-			System.out.println("Collide");
 		}
 	}
 	
@@ -140,7 +143,7 @@ public class Level {
 		Pipe.getMesh().unbind();
 	}
 	
-	private boolean collision() {
+	public boolean collision() {
 		for (int i = 0; i < 5 * 2; i++) {
 			float bx = -xScroll * 0.05f;
 			float by = bird.getY();
