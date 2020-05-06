@@ -1,11 +1,14 @@
 package com.arya.flappy.level;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+
 import java.util.Map;
 import java.util.Random;
 
 import com.arya.flappy.graphics.Shader;
 import com.arya.flappy.graphics.Texture;
 import com.arya.flappy.graphics.VertexArray;
+import com.arya.flappy.input.Input;
 import com.arya.flappy.maths.Matrix4f;
 import com.arya.flappy.maths.Vector3f;
 
@@ -118,6 +121,10 @@ public class Level {
 			bird.fall();
 			control = false;
 		}
+		
+		if(!control && Input.isKeyDown(GLFW_KEY_SPACE)) {
+			reset = true;
+		}
 	}
 	
 	// Me render pipes
@@ -168,6 +175,10 @@ public class Level {
 		}
 		return false;
 	}  
+	
+	public boolean isGameOver() {
+		return reset;
+	}
 	
 	public void render() {
 		bgTexture.bind();
